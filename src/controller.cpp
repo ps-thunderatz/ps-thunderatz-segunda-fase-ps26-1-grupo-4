@@ -11,14 +11,16 @@
 #include "mcu.hpp"
 #include "controller.hpp"
 
-Controller::Controller() {
-    // TODO: Adicionar a lógica de construção do objeto
+Controller::Controller(Led led, Locomotion locomotion, Rc rc) {
+    this->led = led;
+    this->locomotion = locomotion;
+    this->rc = rc;
 }
 
 void Controller::run() {
     switch (this->current_state) {
         case STRATEGY_CHOOSER: {
-            // TODO: Implementar a lógica de escolha de estratégia
+            this->strategy_run();
             break;
         }
         case RUN: {
@@ -26,7 +28,8 @@ void Controller::run() {
             break;
         }
         default: {
-            // TODO: Implementar a lógica de estado padrão
+            this->current_state = STOP;
+
             break;
         }
     }
