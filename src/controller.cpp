@@ -17,19 +17,25 @@ Controller::Controller(Led led, Locomotion locomotion, Rc rc) {
     this->rc = rc;
 }
 
+void Controller::init() {
+    this->current_state = INIT;
+    this->turn = STOPPED;
+    this->led.off();
+    this->locomotion.stop();
+}
+
 void Controller::run() {
     switch (this->current_state) {
         case STRATEGY_CHOOSER: {
-            this->strategy_run();
+            this->set_next_strategy();
             break;
         }
         case RUN: {
-            // TODO: Implementar a lógica de execução da estratégia
+            this->strategy_run();
             break;
         }
         default: {
-            this->current_state = STOP;
-
+            //
             break;
         }
     }
@@ -62,6 +68,10 @@ void Controller::move_robot(Direction direction) {
     }
 }
 
+void set_next_strategy(); {
+    this->current_state = RUN;
+}
+
 void Controller::strategy_run() {
     switch (this->current_level) {
         case LEVEL_0: {
@@ -78,6 +88,7 @@ void Controller::strategy_run() {
         }
         case LEVEL_3: {
             // TODO: Implementar a lógica de execução da estratégia 3
+            break;
         }
         default: {
             break;
