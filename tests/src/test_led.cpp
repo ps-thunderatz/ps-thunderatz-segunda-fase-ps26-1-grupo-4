@@ -14,7 +14,7 @@
 
 int main() {
     hal::mcu::init();
-    Led led(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+    Led led(GPIOA, GPIO_PIN_4);
 
     for (;;) {
         led.toggle();

@@ -17,13 +17,29 @@ Motor::Motor(
     void (*tim_init)(), TIM_HandleTypeDef* forward_tim_handle, uint8_t forward_tim_ch,
     TIM_HandleTypeDef* backward_tim_handle, uint8_t backward_tim_ch, int8_t min_speed, int8_t max_speed
 ) {
-    // Implemente aqui o criador da classe Motor.
+    this->forward_tim_handle = forward_tim_handle;
+    this->forward_tim_ch = forward_tim_ch;
+    this->backward_tim_handle = backward_tim_handle;
+    this->backward_tim_ch = backward_tim_ch;
+    this->min_speed = min_speed;
+    this->max_speed = max_speed;
+    // Inicializa o timer e os canais e deixa o duty cicle setado em 0%.
+    tim_init();
+    HAL_TIM_PWM_Start(forward_tim_handle, forward_tim_ch);
+    HAL_TIM_PWM_Start(backward_tim_handle, backward_tim_ch);
+    this->stop();
 }
 
 void Motor::set_speed(int8_t speed) {
-    // Implemente aqui a função para definir a velocidade do motor.
+    int8_t speed_convertida = utils::map(speed, -100, 100, this->min_speed, this->max_speed);
+    if (speed_convertida >= 0) {
+        __HAL_TIM_SET_COMPARE(this->forward_tim_handle, this->forward_tim_ch, speed_convertida);
+    }
+    else {
+        __HAL_TIM_SET_COMPARE(this->backward_tim_handle, this->backward_tim_ch, -speed_convertida);
+    }
 }
 
 void Motor::stop() {
-    // Implemente aqui a função para parar o motor.
+    this->set_speed(0);
 }
