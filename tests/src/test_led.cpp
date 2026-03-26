@@ -13,8 +13,11 @@
 #include "target.hpp"
 
 int main() {
-    // TODO: Adicionar a lógica de teste para o LED.
     hal::mcu::init();
+    Led led(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
 
-    for (;;) { }
+    for (;;) {
+        led.toggle();
+        hal::mcu::sleep(500);
+    }
 }

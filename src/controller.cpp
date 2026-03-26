@@ -11,7 +11,7 @@
 #include "mcu.hpp"
 #include "controller.hpp"
 
-Controller::Controller() : led(led), locomotion(locomotion), rc(rc) {
+Controller::Controller(Led led, locomotion locomotion, rc rc) : led(led), locomotion(locomotion), rc(rc) {
 }
 
 void Controller::init() {
@@ -39,6 +39,7 @@ void Controller::run() {
 
         case STOP: {
             move_robot(STOPPED);
+            break;
         }
 
         default: {
@@ -52,19 +53,19 @@ void Controller::run() {
 void Controller::move_robot(Direction direction) {
     switch (direction) {
         case FORWARD: {
-            this->locomotion.set_speed(70, 70);
+            this->locomotion.set_speed(100, 100);
             break;
         }
         case BACKWARD: {
-            this->locomotion.set_speed(-70, -70);
+            this->locomotion.set_speed(-100, -100);
             break;
         }
         case LEFT: {
-            this->locomotion.set_speed(-70, 70);
+            this->locomotion.set_speed(-100, 100);
             break;
         }
         case RIGHT: {
-            this->locomotion.set_speed(70, -70);
+            this->locomotion.set_speed(100, -100);
             break;
         }
         case STOPPED: {
@@ -111,21 +112,27 @@ void Controller::set_next_strategy() {
 void Controller::strategy_run() {
     switch (this->current_level) {
         case LEVEL_0: {
-            // TODO: Implementar a lógica de execução da estratégia 0
+            move_robot(RC_INPUT);
             break;
         }
         case LEVEL_1: {
-            // TODO: Implementar a lógica de execução da estratégia 1
+            move_robot(FORWARD);
+            HAL_Delay(2000);
+            this->current_level = LEVEL_0;
             break;
         }
         case LEVEL_2: {
-            // TODO: Implementar a lógica de execução da estratégia 2
+            move_robot(RIGHT);
+            HAL_Delay(2000);
+            move_robot(STOPPED);
+            this->current_level = LEVEL_0;
             break;
         }
         case LEVEL_3: {
             // TODO: Implementar a lógica de execução da estratégia 3
         }
         default: {
+            move_robot(STOPPED);
             break;
         }
     }
