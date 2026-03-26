@@ -32,19 +32,19 @@ void Controller::run() {
 
         case STRATEGY_CHOOSER: {
 
-            int x = 0;
-            int y = 0;
+            init16_t ch1 = this->rc,get_speed_ch1()
+            init16_t ch2 = this->rc,get_speed_ch2()
 
-            if (x < -50) {
+            if (ch1 < -50) {
                 this->current_level = LEVEL_0;
             }
-            else if (y > 50) {
+            else if (ch2 > 50) {
                 this->current_level = LEVEL_1;
             }
-            else if (x > 50) {
+            else if (ch1 > 50) {
                 this->current_level = LEVEL_2;
             }
-            else if (y < -50) {
+            else if (ch2 < -50) {
                 this->current_level = LEVEL_3;
             }
 
@@ -59,10 +59,10 @@ void Controller::run() {
         }
 
         case RUN: {
-            int x = 0;
-            int y = 0;
+            init16_t ch1 = this->rc,get_speed_ch1()
+            init16_t ch2 = this->rc,get_speed_ch2()
 
-            if (x == -100 && y == -100) {
+            if (ch1 == -100 && ch2 == -100) {
                 move_robot(BACKWARD);
                 break;
             }
@@ -116,11 +116,8 @@ void Controller::move_robot(Direction direction) {
         }
 
         case RC_INPUT: {
-            int x = 0;
-            int y = 0;
-
-            int left = y + x;
-            int right = y - x;
+            init16_t ch1 = this->rc,get_speed_ch1()
+            init16_t ch2 = this->rc,get_speed_ch2()
 
             int left = (y + x) * 70/100;
             int right = (y - x) * 70/100;
