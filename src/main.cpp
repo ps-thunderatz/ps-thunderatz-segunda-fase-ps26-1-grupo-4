@@ -7,14 +7,6 @@
 #include "utils.hpp"
 #include "locomotion.hpp"
 
-#define MOTORS_TIM_HANDLER (htim2)
-
-#define RIGHT_MOTOR_FORWARD_TIM_CH TIM_CHANNEL_1
-#define RIGHT_MOTOR_BACKWARD_TIM_CH TIM_CHANNEL_2
-
-#define LEFT_MOTOR_FORWARD_TIM_CH TIM_CHANNEL_3
-#define LEFT_MOTOR_BACKWARD_TIM_CH TIM_CHANNEL_4
-
 static volatile int16_t left_speed;
 static volatile int16_t right_speed;
 static volatile int16_t channel_1;
