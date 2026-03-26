@@ -10,6 +10,10 @@
 
 #include "mcu.hpp"
 #include "controller.hpp"
+#include "led.hpp"
+#include "locomotion.hpp"
+#include "rc.hpp"
+
 
 Controller::Controller(Led led, locomotion locomotion, rc rc) : led(led), locomotion(locomotion), rc(rc) {
 }
@@ -76,7 +80,7 @@ void Controller::move_robot(Direction direction) {
             int16_t ch1 = this->rc.get_speed_ch1();
             int16_t ch2 = this->rc.get_speed_ch2();
 
-            this->locomotion.set_speed((int8_t)ch1, (int8_t)ch2);
+            this->locomotion.set_speed(static_cast <int8_t>(ch1), <int8_t>(ch2));
 
             break;
         }

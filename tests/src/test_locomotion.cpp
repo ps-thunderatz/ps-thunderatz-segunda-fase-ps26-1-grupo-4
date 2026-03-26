@@ -17,7 +17,17 @@
 int main() {
     mcu::init();
     Led led(GPIOA, GPIO_PIN_4);
-    locomotion locomotion(motor_left, motor_right);
+
+     Motor leftMotor(
+        MOTORS_TIM_INIT, &MOTORS_TIM_HANDLER, LEFT_MOTOR_FORWARD_TIM_CH, &MOTORS_TIM_HANDLER, LEFT_MOTOR_BACKWARD_TIM_CH
+    );
+
+    Motor rightMotor(
+        MOTORS_TIM_INIT, &MOTORS_TIM_HANDLER, RIGHT_MOTOR_FORWARD_TIM_CH, &MOTORS_TIM_HANDLER,
+        RIGHT_MOTOR_BACKWARD_TIM_CH
+    );
+
+    locomotion locomotion(leftMotor, rightMotor);
 
     for (;;) {
         //Para frente
