@@ -40,10 +40,9 @@ private:
      * @brief Controller states.
      */
     enum State {
-        INIT,
         STRATEGY_CHOOSER,
         RUN,
-        STOP,
+
     };
 
     /**
