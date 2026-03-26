@@ -163,13 +163,35 @@ void Controller::strategy_run() {
             move_robot(RIGHT);
             break;
         }
+        case LEVEL_3 {
+    if (!this->strategy_started) {
+        this->strategy_started = true;
+        this->strategy_start_time = HAL_GetTick();
+    }
 
-        case LEVEL_3: {
+    uint32_t elapsed = HAL_GetTick() - this->strategy_start_time;
 
-            move_robot();
-            break;
-        }
+    if (elapsed < 1000) {
+        locomotion.set_speed(-30, -30);
+    }
+    else if (elapsed < 1700) {
+        locomotion.set_speed(50, -50);
+    }
+    else if (elapsed < 2400) {
+        locomotion.set_speed(70, 40);
+    }
+    else if (elapsed < 3100) {
+        locomotion.set_speed(40, 70);
+    }
+    else if (elapsed < 3800) {
+        locomotion.set_speed(70, 40);
+    }
+    else {
+        move_robot(RC_INPUT);
+    }
 
+    break;
+}
         default: {
             move_robot(STOPPED);
             this->current_state = STOP;
