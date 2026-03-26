@@ -28,21 +28,12 @@ void Controller::init() {
 
 void Controller::run() {
     switch (this->current_state) {
-        case INIT: {
-            init();
-            break;
-        }
         case STRATEGY_CHOOSER: {
             set_next_strategy();
             break;
         }
         case RUN: {
             strategy_run();
-            break;
-        }
-
-        case STOP: {
-            move_robot(STOPPED);
             break;
         }
 
