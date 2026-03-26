@@ -122,11 +122,10 @@ void Controller::move_robot(Direction direction) {
             int left = y + x;
             int right = y - x;
 
-           if (left > 70) left = 70
-           if ()
-            else {
-                move_robot(STOPPED);
-            }
+            int left = (y + x) * 70/100;
+            int right = (y - x) * 70/100;
+
+            locomotion.set_speed(left, right);
             break;
         }
 
@@ -149,25 +148,25 @@ void Controller::strategy_run() {
     switch (this->current_level) {
         case LEVEL_0: {
 
-            move_robot(FORWARD);
+            move_robot(RC_INPUT);
             break;
         }
 
         case LEVEL_1: {
 
-            move_robot(RIGHT);
+            move_robot(FORWARD);
             break;
         }
 
         case LEVEL_2: {
 
-            move_robot(FORWARD);
+            move_robot(RIGHT);
             break;
         }
 
         case LEVEL_3: {
 
-            move_robot(RC_INPUT);
+            move_robot();
             break;
         }
 
