@@ -164,9 +164,11 @@ void Controller::strategy_run() {
             break;
         }
         case LEVEL_3 {
-    if (!this->strategy_started) {
-        this->strategy_started = true;
-        this->strategy_start_time = HAL_GetTick();
+    static uint32_t strategy_start_time = 0;
+    static bool strategy_start_time = false
+    if (!strategy_started){
+        strategy_started = true;
+        strategy_start_time = HAL_GetTick();
     }
 
     uint32_t elapsed = HAL_GetTick() - this->strategy_start_time;
