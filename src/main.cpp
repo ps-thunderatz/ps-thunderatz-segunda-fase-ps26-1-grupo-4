@@ -15,7 +15,7 @@ static volatile int16_t channel_2;
 int main() {
     hal::mcu::init();
 
-    Led led(LED_GPIO_Port, LED_Pin);
+    Led led(LED_PORT, LED_PIN);
     led.on();
 
     Motor leftMotor(
