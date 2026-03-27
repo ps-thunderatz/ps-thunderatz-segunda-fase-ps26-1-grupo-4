@@ -32,38 +32,38 @@ int main() {
     for (;;) {
         //Para frente
         led.on();
-        locomotion.set_speed(100, 100);
+        locomotion.set_speed(70, 70);
         HAL_Delay(2000);
 
         //Parar
         locomotion.stop();
-        HAL_Delay(1000);
+        HAL_Delay(700);
 
         //Para trás
         led.toggle();
-        locomotion.set_speed(-100, -100);
+        locomotion.set_speed(-70, -70);
         HAL_Delay(2000);
 
         //Parar
         locomotion.stop();
-        HAL_Delay(1000);
+        HAL_Delay(700);
 
         //Para direita
         led.toggle();
-        locomotion.set_speed(100, -100);
+        locomotion.set_speed(70, -70);
         HAL_Delay(1500);
 
         //Parar
         locomotion.stop();
-        HAL_Delay(1000);
+        HAL_Delay(700);
 
         //Para esquerda
         led.toggle();
-        locomotion.set_speed(-100, 100);
+        locomotion.set_speed(-70, 70);
         HAL_Delay(1500);
 
         //Parar
         locomotion.stop();
-        HAL_Delay(1000);
+        HAL_Delay(700);
     }
 }

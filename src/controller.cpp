@@ -48,19 +48,19 @@ void Controller::run() {
 void Controller::move_robot(Direction direction) {
     switch (direction) {
         case FORWARD: {
-            this->locomotion.set_speed(100, 100);
+            this->locomotion.set_speed(70, 70);
             break;
         }
         case BACKWARD: {
-            this->locomotion.set_speed(-100, -100);
+            this->locomotion.set_speed(-70, -70);
             break;
         }
         case LEFT: {
-            this->locomotion.set_speed(-100, 100);
+            this->locomotion.set_speed(-70, 70);
             break;
         }
         case RIGHT: {
-            this->locomotion.set_speed(100, -100);
+            this->locomotion.set_speed(70, -70);
             break;
         }
         case STOPPED: {
@@ -130,6 +130,28 @@ void Controller::strategy_run() {
                 strategy_started = true;
                 strategy_start_time = HAL_GetTick();
             }
+            uint32_t elapsed = HAL_GetTick() - this->strategy_start_time;
+
+            if (elapsed < 1000) {
+                locomotion.set_speed(-30, -30);
+            }
+            else if (elapsed < 1700) {
+                locomotion.set_speed(50, -50);
+            }
+            else if (elapsed < 2400) {
+                locomotion.set_speed(70, 40);
+            }
+            else if (elapsed < 3100) {
+                locomotion.set_speed(40, 70);
+            }
+            else if (elapsed < 3800) {
+                locomotion.set_speed(70, 40);
+            }
+            else {
+                move_robot(RC_INPUT);
+            }
+
+            break;
         }
         default: {
             move_robot(STOPPED);
