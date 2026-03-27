@@ -31,7 +31,7 @@ Motor::Motor(
 }
 
 void Motor::set_speed(int8_t speed) {
-    int8_t speed_convertida = utils::map(speed, -100, 100, this->min_speed, this->max_speed);
+    int8_t speed_convertida = utils::map(speed,this->min_speed, this->max_speed, -1000, 1000);
     if (speed_convertida >= 0) {
         __HAL_TIM_SET_COMPARE(this->forward_tim_handle, this->forward_tim_ch, speed_convertida);
     }
