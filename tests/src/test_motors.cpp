@@ -14,6 +14,38 @@
 #include "led.hpp"
 
 int main() {
-    // TODO: Adicionar a lógica de teste para o motor.
-    for (;;) { }
+    hal::mcu::init();
+
+    Motor leftMotor(
+        MOTORS_TIM_INIT, &MOTORS_TIM_HANDLER, LEFT_MOTOR_FORWARD_TIM_CH, &MOTORS_TIM_HANDLER,
+        LEFT_MOTOR_BACKWARD_TIM_CH
+    );
+
+    Motor rightMotor(
+        MOTORS_TIM_INIT, &MOTORS_TIM_HANDLER, RIGHT_MOTOR_FORWARD_TIM_CH, &MOTORS_TIM_HANDLER,
+        RIGHT_MOTOR_BACKWARD_TIM_CH
+    );
+
+
+    for (;;) {
+        leftMotor.set_speed(20);
+        rightMotor.set_speed(20);
+        hal::mcu::sleep(1000);
+        leftMotor.set_speed(70);
+        rightMotor.set_speed(70);
+        hal::mcu::sleep(1000);
+        leftMotor.set_speed(20);
+        rightMotor.set_speed(20);
+        hal::mcu::sleep(1000);
+
+        leftMotor.set_speed(-20);
+        rightMotor.set_speed(-20);
+        hal::mcu::sleep(1000);
+        leftMotor.set_speed(-70);
+        rightMotor.set_speed(-70);
+        hal::mcu::sleep(1000);
+        leftMotor.set_speed(-20);
+        rightMotor.set_speed(-20);
+        hal::mcu::sleep(1000);
+    }
 }

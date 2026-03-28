@@ -23,7 +23,7 @@ public:
     /**
      * @brief Construct a new Controller object.
      */
-    Controller(Led led, Locomotion locomotion, Rc rc);
+    Controller(Led& led, Locomotion& locomotion, Rc& rc);
 
     /**
      * @brief Initialize controller.
@@ -35,7 +35,7 @@ public:
      */
     void run();
 
-private:
+//private:
     /**
      * @brief Controller states.
      */
@@ -43,7 +43,7 @@ private:
         INIT,
         STRATEGY_CHOOSER,
         RUN,
-        STOP,
+
     };
 
     /**
@@ -82,16 +82,14 @@ private:
      */
     void strategy_run();
 
-    Led        led;
-    Locomotion locomotion;
-    Rc         rc;
+    Led*        led;
+    Locomotion* locomotion;
+    Rc*         rc;
 
     State     current_state = INIT;
     Direction turn = STOPPED;
 
     const uint8_t max_strategy = 3;
     uint8_t       current_level = 0;
-
-};  // namespace controller
-
+};
 #endif  // CONTROLLER_HPP
