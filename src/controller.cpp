@@ -15,14 +15,14 @@
 #include "rc.hpp"
 
 
-Controller::Controller(Led led, Locomotion locomotion, Rc rc) : led(led), locomotion(locomotion), rc(rc) {
+Controller::Controller(Led& led, Locomotion& locomotion, Rc& rc) : led(&led), locomotion(&locomotion), rc(&rc) {
 }
 
 void Controller::init() {
     this->current_state = STRATEGY_CHOOSER;
     this->current_level = LEVEL_0;
     this->turn = STOPPED;
-    this->led.off();
+    this->led->off();
     this->move_robot(STOPPED);
 }
 
@@ -48,23 +48,23 @@ void Controller::run() {
 void Controller::move_robot(Direction direction) {
     switch (direction) {
         case FORWARD: {
-            this->locomotion.set_speed(70, 70);
+            this->locomotion->set_speed(70, 70);
             break;
         }
         case BACKWARD: {
-            this->locomotion.set_speed(-70, -70);
+            this->locomotion->set_speed(-70, -70);
             break;
         }
         case LEFT: {
-            this->locomotion.set_speed(-70, 70);
+            this->locomotion->set_speed(-70, 70);
             break;
         }
         case RIGHT: {
-            this->locomotion.set_speed(70, -70);
+            this->locomotion->set_speed(70, -70);
             break;
         }
         case STOPPED: {
-            this->locomotion.stop();
+            this->locomotion->stop();
             break;
         }
         case RC_INPUT: {
@@ -87,20 +87,20 @@ void Controller::move_robot(Direction direction) {
             }
             */
 
-            this->locomotion.set_speed(this->rc.get_speed_ch1(), this->rc.get_speed_ch2());
+            this->locomotion->set_speed(this->rc->get_speed_ch1(), this->rc->get_speed_ch2());
 
             break;
         }
         default: {
-            this->locomotion.stop();
+            this->locomotion->stop();
             break;
         }
     }
 }
 
 void Controller::set_next_strategy() {
-    int16_t ch1 = this->rc.get_speed_ch1();
-    int16_t ch2 = this->rc.get_speed_ch2();
+    int16_t ch1 = this->rc->get_speed_ch1();
+    int16_t ch2 = this->rc->get_speed_ch2();
 
     if (ch1 > 50) {
         this->current_level = LEVEL_1;
@@ -140,15 +140,15 @@ void Controller::strategy_run() {
             break;
         }
         case LEVEL_3: {
-            locomotion.set_speed(-30, -30);
+            locomotion->set_speed(-30, -30);
             HAL_Delay(700);
-            locomotion.set_speed(50, -50);
+            locomotion->set_speed(50, -50);
             HAL_Delay(700);
-            locomotion.set_speed(70, 20);
+            locomotion->set_speed(70, 20);
             HAL_Delay(700);
-            locomotion.set_speed(20, 70);
+            locomotion->set_speed(20, 70);
             HAL_Delay(700);
-            locomotion.set_speed(70, 20);
+            locomotion->set_speed(70, 20);
             HAL_Delay(700);
             this->current_level = LEVEL_0;
             break;
