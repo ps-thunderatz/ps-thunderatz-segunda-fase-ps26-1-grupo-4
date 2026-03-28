@@ -15,7 +15,7 @@
 #include "rc.hpp"
 
 
-Controller::Controller(Led led, locomotion locomotion, rc rc) : led(led), locomotion(locomotion), rc(rc) {
+Controller::Controller(Led led, Locomotion locomotion, Rc rc) : led(led), locomotion(locomotion), rc(rc) {
 }
 
 void Controller::init() {
@@ -68,10 +68,26 @@ void Controller::move_robot(Direction direction) {
             break;
         }
         case RC_INPUT: {
+            /*
             int16_t ch1 = this->rc.get_speed_ch1();
             int16_t ch2 = this->rc.get_speed_ch2();
 
-            this->locomotion.set_speed(static_cast <int8_t>(ch1), <int8_t>(ch2));
+            ch1 = constrain(ch1, -70, 70);
+            ch2 = constrain(ch2, -70, 70);
+
+            if (ch2 > -10 && ch2 < 10) {
+                this->locomotion.set_speed(static_cast <int16_t>(ch1), static_cast <int16_t>(ch1));
+            }
+
+            else if (ch2 > 10) {
+                this->locomotion.set_speed(static_cast <int16_t>(ch1), static_cast <int16_t>(-ch1));
+            }
+            else {
+                this->locomotion.set_speed(static_cast <int16_t>(-ch1), static_cast <int16_t>(ch1));
+            }
+            */
+
+            this->locomotion.set_speed(this->rc.get_speed_ch1(), this->rc.get_speed_ch2());
 
             break;
         }
@@ -124,33 +140,17 @@ void Controller::strategy_run() {
             break;
         }
         case LEVEL_3: {
-            static uint32_t strategy_start_time = 0;
-            static bool strategy_started = false;
-            if (!strategy_started) {
-                strategy_started = true;
-                strategy_start_time = HAL_GetTick();
-            }
-            uint32_t elapsed = HAL_GetTick() - this->strategy_start_time;
-
-            if (elapsed < 1000) {
-                locomotion.set_speed(-30, -30);
-            }
-            else if (elapsed < 1700) {
-                locomotion.set_speed(50, -50);
-            }
-            else if (elapsed < 2400) {
-                locomotion.set_speed(70, 40);
-            }
-            else if (elapsed < 3100) {
-                locomotion.set_speed(40, 70);
-            }
-            else if (elapsed < 3800) {
-                locomotion.set_speed(70, 40);
-            }
-            else {
-                move_robot(RC_INPUT);
-            }
-
+            locomotion.set_speed(-30, -30);
+            HAL_Delay(700);
+            locomotion.set_speed(50, -50);
+            HAL_Delay(700);
+            locomotion.set_speed(70, 20);
+            HAL_Delay(700);
+            locomotion.set_speed(20, 70);
+            HAL_Delay(700);
+            locomotion.set_speed(70, 20);
+            HAL_Delay(700);
+            this->current_level = LEVEL_0;
             break;
         }
         default: {

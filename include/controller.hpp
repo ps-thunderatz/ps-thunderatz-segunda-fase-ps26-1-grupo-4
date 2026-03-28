@@ -35,11 +35,12 @@ public:
      */
     void run();
 
-private:
+//private:
     /**
      * @brief Controller states.
      */
     enum State {
+        INIT,
         STRATEGY_CHOOSER,
         RUN,
 

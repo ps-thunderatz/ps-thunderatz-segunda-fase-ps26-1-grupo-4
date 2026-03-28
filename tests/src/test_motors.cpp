@@ -28,12 +28,24 @@ int main() {
 
 
     for (;;) {
+        leftMotor.set_speed(20);
+        rightMotor.set_speed(20);
+        hal::mcu::sleep(1000);
         leftMotor.set_speed(70);
         rightMotor.set_speed(70);
-        mcu::sleep(1000);
+        hal::mcu::sleep(1000);
+        leftMotor.set_speed(20);
+        rightMotor.set_speed(20);
+        hal::mcu::sleep(1000);
 
+        leftMotor.set_speed(-20);
+        rightMotor.set_speed(-20);
+        hal::mcu::sleep(1000);
         leftMotor.set_speed(-70);
         rightMotor.set_speed(-70);
-        mcu::sleep(1000);
+        hal::mcu::sleep(1000);
+        leftMotor.set_speed(-20);
+        rightMotor.set_speed(-20);
+        hal::mcu::sleep(1000);
     }
 }

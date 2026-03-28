@@ -31,12 +31,24 @@ Motor::Motor(
 }
 
 void Motor::set_speed(int8_t speed) {
-    int8_t speed_convertida = utils::map(speed,this->min_speed, this->max_speed, -1000, 1000);
-    if (speed_convertida >= 0) {
-        __HAL_TIM_SET_COMPARE(this->forward_tim_handle, this->forward_tim_ch, speed_convertida);
+    int32_t speed_convertida = abs(constrain(speed, this->min_speed, this->max_speed));
+    auto forward_auto_reload = __HAL_TIM_GET_AUTORELOAD(forward_tim_handle);
+    auto backward_auto_reload = __HAL_TIM_GET_AUTORELOAD(backward_tim_handle);
+    auto forward_count = map<uint32_t>(speed_convertida, 0, this->max_speed, 0, forward_auto_reload);
+    auto backward_count = map<uint32_t>(speed_convertida, 0, this->max_speed, 0, backward_auto_reload);
+
+    if (abs(speed) <= BREAK_SPEED_THRESHOLD) {
+        __HAL_TIM_SET_COMPARE(this->forward_tim_handle, this->forward_tim_ch, forward_auto_reload);
+        __HAL_TIM_SET_COMPARE(this->backward_tim_handle, this->backward_tim_ch, backward_auto_reload);
+        return;
+    }
+    if (speed >= 0) {
+        __HAL_TIM_SET_COMPARE(this->forward_tim_handle, this->forward_tim_ch, forward_count);
+        __HAL_TIM_SET_COMPARE(this->backward_tim_handle, this->backward_tim_ch, 0);
     }
     else {
-        __HAL_TIM_SET_COMPARE(this->backward_tim_handle, this->backward_tim_ch, -speed_convertida);
+        __HAL_TIM_SET_COMPARE(this->forward_tim_handle, this->forward_tim_ch, 0);
+        __HAL_TIM_SET_COMPARE(this->backward_tim_handle, this->backward_tim_ch, backward_count);
     }
 }
 
